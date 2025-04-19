@@ -1,98 +1,255 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# LegalisFlow Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is the backend API for LegalisFlow, a multi-tenant SaaS platform for law firms built with NestJS.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Technology Stack
 
-## Description
+- [NestJS](https://nestjs.com/) - Progressive Node.js framework for building server-side applications
+- [TypeScript](https://www.typescriptlang.org/) - Strongly typed programming language
+- [TypeORM](https://typeorm.io/) - ORM for TypeScript and JavaScript
+- [PostgreSQL](https://www.postgresql.org/) - Relational database
+- [JWT](https://jwt.io/) - JSON Web Token for authentication
+- [Swagger](https://swagger.io/) - API documentation
+- [Jest](https://jestjs.io/) - Testing framework
+- [Class Validator](https://github.com/typestack/class-validator) - Validation library
+- [Passport](https://www.passportjs.org/) - Authentication middleware
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Getting Started
 
-## Project setup
+### Prerequisites
+
+- Node.js 18.x or higher
+- npm 9.x or higher
+- PostgreSQL 14.x or higher
+
+### Installation
+
+1. Install dependencies:
 
 ```bash
-$ npm install
+cd backend
+npm install
 ```
 
-## Compile and run the project
+2. Create a `.env` file in the backend directory based on `.env.example`:
 
-```bash
-# development
-$ npm run start
+```
+# Application
+PORT=3001
+NODE_ENV=development
+APP_URL=http://localhost:3001
+FRONTEND_URL=http://localhost:3000
 
-# watch mode
-$ npm run start:dev
+# Database
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=password
+DATABASE_NAME=legalisflow
 
-# production mode
-$ npm run start:prod
+# JWT
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRATION_TIME=1d
+JWT_REFRESH_SECRET=your_refresh_token_secret
+JWT_REFRESH_EXPIRATION_TIME=7d
+
+# Email
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USER=user@example.com
+MAIL_PASSWORD=password
+MAIL_FROM=noreply@legalisflow.com
 ```
 
-## Run tests
+3. Set up the database:
 
 ```bash
-# unit tests
-$ npm run test
+npm run typeorm:run
+```
 
-# e2e tests
-$ npm run test:e2e
+### Development
 
-# test coverage
-$ npm run test:cov
+Start the development server:
+
+```bash
+npm run start:dev
+```
+
+The API will be available at http://localhost:3001/api.
+
+## Project Structure
+
+```
+backend/
+├── src/
+│   ├── app.module.ts           # Main application module
+│   ├── main.ts                 # Entry point
+│   ├── common/                 # Common utilities, decorators, and filters
+│   │   ├── decorators/         # Custom decorators
+│   │   ├── filters/            # Exception filters
+│   │   ├── guards/             # Authentication guards
+│   │   ├── interceptors/       # Request/response interceptors
+│   │   └── middleware/         # Custom middleware
+│   ├── config/                 # Application configuration
+│   ├── modules/                # Feature modules
+│   │   ├── auth/               # Authentication module
+│   │   ├── users/              # Users module
+│   │   ├── tenants/            # Tenants module
+│   │   ├── roles/              # Roles module
+│   │   ├── permissions/        # Permissions module
+│   │   ├── cases/              # Cases module
+│   │   ├── clients/            # Clients module
+│   │   └── documents/          # Documents module
+│   └── database/               # Database configuration and migrations
+│       ├── migrations/         # TypeORM migrations
+│       └── seeds/              # Seed data
+└── test/                       # Test files
+```
+
+## API Endpoints
+
+The API follows RESTful conventions. Main endpoints include:
+
+- **Auth**: `/api/auth` - Authentication endpoints
+- **Users**: `/api/users` - User management
+- **Tenants**: `/api/tenants` - Tenant management
+- **Roles**: `/api/roles` - Role management
+- **Permissions**: `/api/permissions` - Permission management
+- **Cases**: `/api/cases` - Case management
+- **Clients**: `/api/clients` - Client management
+- **Documents**: `/api/documents` - Document management
+
+Full API documentation is available via Swagger at:
+```
+http://localhost:3001/api/docs
+```
+
+## Multi-tenancy Implementation
+
+The application uses a database-per-tenant model:
+- The `x-tenant-subdomain` header is required for most API endpoints
+- A middleware extracts and validates the tenant from this header
+- Database connections are managed dynamically based on the tenant
+- Support for common database operations across all tenants
+
+## Available Scripts
+
+- `npm run build` - Build the application
+- `npm run format` - Format code with Prettier
+- `npm run start` - Start the application in production mode
+- `npm run start:dev` - Start the application in development mode
+- `npm run start:debug` - Start the application in debug mode
+- `npm run lint` - Lint the code with ESLint
+- `npm run test` - Run tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:cov` - Run tests with coverage
+- `npm run test:e2e` - Run end-to-end tests
+- `npm run typeorm` - Run TypeORM commands
+- `npm run typeorm:run` - Run database migrations
+- `npm run typeorm:generate` - Generate a new migration
+- `npm run seed` - Seed the database with initial data
+
+## Debugging
+
+### Using NestJS Debug Mode
+
+```bash
+npm run start:debug
+```
+
+### Using VS Code
+
+1. Create a launch.json file in the backend directory:
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug NestJS",
+      "args": ["${workspaceFolder}/src/main.ts"],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register", "-r", "tsconfig-paths/register"],
+      "sourceMaps": true,
+      "envFile": "${workspaceFolder}/.env",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ]
+}
+```
+
+2. Press F5 in VS Code to start debugging
+
+## Testing
+
+### Unit Tests
+
+```bash
+npm run test
+```
+
+### E2E Tests
+
+```bash
+npm run test:e2e
+```
+
+### Test Coverage
+
+```bash
+npm run test:cov
+```
+
+## Database Management
+
+### Migrations
+
+Create a new migration:
+
+```bash
+npm run typeorm:generate -- -n MigrationName
+```
+
+Run migrations:
+
+```bash
+npm run typeorm:run
+```
+
+### Seeds
+
+Seed the database with initial data:
+
+```bash
+npm run seed
 ```
 
 ## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+1. Build the application:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+npm run build
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+2. Set environment variables for production
+3. Start the application:
 
-## Resources
+```bash
+npm run start:prod
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## Docker Support
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+A `Dockerfile` is provided for containerization:
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+docker build -t legalisflow-backend .
+docker run -p 3001:3001 legalisflow-backend
+```
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT
