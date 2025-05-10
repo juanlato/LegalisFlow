@@ -1,4 +1,3 @@
-
 export const useTenant = () => {
   // En desarrollo puedes usar un valor por defecto
   if (process.env.NODE_ENV === 'development') {

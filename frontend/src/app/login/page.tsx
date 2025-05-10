@@ -3,16 +3,23 @@
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../contexts/AuthContext';
+import { usePermissions } from '@/hooks/usePermissions';
 
 export default function LoginPage() {
+  const { refreshPermissions } = usePermissions();
   const { login } = useAuth();
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm();
 
   const onSubmit = async (data: any) => {
     try {
       await login(data.email, data.password);
-      router.push('/main/users');
+      await refreshPermissions();
+      router.push('/main');
     } catch (error) {
       console.error('Login failed:', error);
       alert('Error al iniciar sesión. Verifica tus credenciales.');
@@ -20,11 +27,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">
-          Iniciar sesión
-        </h2>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow">
+        <h2 className="text-center text-3xl font-extrabold text-gray-900">Iniciar sesión</h2>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -33,11 +38,13 @@ export default function LoginPage() {
             <input
               id="email"
               type="email"
-              placeholder='email.@example.com'
+              placeholder="email.@example.com"
               {...register('email', { required: 'Email es requerido' })}
-              className="w-full input-field"
+              className="input-field w-full"
             />
-            {errors.email?.message && <p className="mt-2 text-sm text-red-600">{String(errors.email.message)}</p>}
+            {errors.email?.message && (
+              <p className="mt-2 text-sm text-red-600">{String(errors.email.message)}</p>
+            )}
           </div>
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -47,16 +54,14 @@ export default function LoginPage() {
               id="password"
               type="password"
               {...register('password', { required: 'Contraseña es requerida' })}
-              className="w-full input-field"
+              className="input-field w-full"
             />
-            {errors.password?.message && <p className="mt-2 text-sm text-red-600">{String(errors.password.message)}</p>}
+            {errors.password?.message && (
+              <p className="mt-2 text-sm text-red-600">{String(errors.password.message)}</p>
+            )}
           </div>
           <div>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full btn-primary"
-            >
+            <button type="submit" disabled={isSubmitting} className="btn-primary w-full">
               {isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>
           </div>

@@ -2,8 +2,6 @@ import { useTenant } from '@/hooks/useTenant';
 import api, { getApiHeaders } from '../api';
 import { PaginatedResponse } from '../interface/PaginatedResponse';
 
-
-
 export interface User {
   id: string;
   email: string;
@@ -35,25 +33,25 @@ export interface UserResponse {
   updatedAt: string;
 }
 
-
-
 export const fetchUsers = async (): Promise<User[]> => {
   const tenant = useTenant();
   const response = await api.get('/users', {
-    headers: getApiHeaders(tenant)
+    headers: getApiHeaders(tenant),
   });
   return response.data;
 };
-export const getUsers = async (params: GetUsersParams = {}): Promise<PaginatedResponse<UserResponse>> => {
+export const getUsers = async (
+  params: GetUsersParams = {},
+): Promise<PaginatedResponse<UserResponse>> => {
   try {
-    const tenant = useTenant();  
+    const tenant = useTenant();
     const response = await api.get<PaginatedResponse<UserResponse>>('/users', {
       headers: getApiHeaders(tenant),
       params: {
-        ...params,  
-      }
+        ...params,
+      },
     });
-    
+
     const data = Array.isArray(response.data.data) ? response.data.data : [];
     return {
       data: data,
@@ -74,19 +72,22 @@ export const createUser = async (userData: {
 }): Promise<User> => {
   const tenant = useTenant();
   const response = await api.post('/users', userData, {
-    headers: getApiHeaders(tenant)
+    headers: getApiHeaders(tenant),
   });
   return response.data;
 };
 
-export const updateUser = async (id: string, userData: {
-  email?: string;
-  isActive?: boolean;
-  roleId?: string;
-}): Promise<User> => {
+export const updateUser = async (
+  id: string,
+  userData: {
+    email?: string;
+    isActive?: boolean;
+    roleId?: string;
+  },
+): Promise<User> => {
   const tenant = useTenant();
   const response = await api.patch(`/users/${id}`, userData, {
-    headers: getApiHeaders(tenant)
+    headers: getApiHeaders(tenant),
   });
   return response.data;
 };
@@ -94,14 +95,14 @@ export const updateUser = async (id: string, userData: {
 export const deleteUser = async (id: string): Promise<void> => {
   const tenant = useTenant();
   await api.delete(`/users/${id}`, {
-    headers: getApiHeaders(tenant)
+    headers: getApiHeaders(tenant),
   });
 };
 
 export const assignRole = async (userId: string, roleId: string) => {
-  const tenant = useTenant(); 
-  const response = await api.patch(`/users/${userId}/assign-role/${roleId}`, {
-    headers: getApiHeaders(tenant)
+  const tenant = useTenant();
+  const response = await api.patch(`/users/${userId}/assign-role/${roleId}`,{}, {
+    headers: getApiHeaders(tenant),
   });
   return response.data;
 };

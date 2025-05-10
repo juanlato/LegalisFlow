@@ -10,20 +10,20 @@ const api = axios.create({
 export const getApiHeaders = (tenant: string | null, token?: string | null) => {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
   };
-  
+
   // Añadir tenant si existe
   if (tenant) {
     headers['x-tenant-subdomain'] = tenant;
   }
-  
+
   // Usar el token proporcionado o buscarlo en localStorage
   const authToken = token || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
   if (authToken) {
     headers['Authorization'] = `Bearer ${authToken}`;
   }
-  
+
   return headers;
 };
 
@@ -40,14 +40,14 @@ api.interceptors.response.use(
         window.location.href = '/login';
       }
     }
-    
+
     // Para errores 500, podríamos mostrar una notificación genérica
     if (error.response?.status >= 500) {
       console.error('Error del servidor:', error.response?.data || error.message);
     }
-    
+
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

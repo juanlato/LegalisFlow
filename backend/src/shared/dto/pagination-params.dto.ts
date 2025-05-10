@@ -5,7 +5,7 @@ export class PaginationParamsDto {
   @ApiPropertyOptional({
     description: 'Número de página',
     default: 1,
-    minimum: 0
+    minimum: 0,
   })
   @IsInt()
   @Min(1)
@@ -15,7 +15,7 @@ export class PaginationParamsDto {
   @ApiPropertyOptional({
     description: 'Límite de resultados por página',
     default: 10,
-    minimum: 1
+    minimum: 1,
   })
   @IsInt()
   @Min(1)

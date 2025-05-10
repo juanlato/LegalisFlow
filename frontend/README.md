@@ -96,6 +96,7 @@ frontend/
 ### Using Chrome DevTools
 
 1. Start the application in development mode:
+
    ```bash
    npm run dev
    ```
@@ -128,6 +129,7 @@ frontend/
 ```
 
 2. Start the development server:
+
    ```bash
    npm run dev
    ```
@@ -143,11 +145,11 @@ npm run start
 
 ## Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_API_URL` | Backend API URL | `http://localhost:3001/api` |
-| `NEXT_PUBLIC_APP_URL` | Frontend application URL | `http://localhost:3000` |
-| `NEXT_PUBLIC_TENANT_COOKIE` | Cookie name for tenant identification | `tenant` |
+| Variable                    | Description                           | Default                     |
+| --------------------------- | ------------------------------------- | --------------------------- |
+| `NEXT_PUBLIC_API_URL`       | Backend API URL                       | `http://localhost:3001/api` |
+| `NEXT_PUBLIC_APP_URL`       | Frontend application URL              | `http://localhost:3000`     |
+| `NEXT_PUBLIC_TENANT_COOKIE` | Cookie name for tenant identification | `tenant`                    |
 
 ## Learn More
 

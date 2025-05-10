@@ -25,7 +25,9 @@ export const GenericTable = ({
   onSort,
   loading = false,
 }: GenericTableProps) => {
-  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(
+    null,
+  );
   const { hasPermission } = usePermissions();
 
   const handleSort = (key: string) => {
@@ -42,14 +44,14 @@ export const GenericTable = ({
   };
 
   return (
-    <div className="overflow-x-auto bg-white rounded-lg shadow">
-      <table className="min-w-full divide-y divide-gray-200 rounded-lg overflow-hidden">
+    <div className="overflow-x-auto rounded-lg bg-white shadow">
+      <table className="min-w-full divide-y divide-gray-200 overflow-hidden rounded-lg">
         <thead className="bg-gradient-to-r from-indigo-600 to-indigo-800">
           <tr>
             {actions.length > 0 && (
               <th
                 scope="col"
-                className="px-2 py-3 text-center text-xs font-medium text-white uppercase tracking-wider"
+                className="px-2 py-3 text-center text-xs font-medium tracking-wider text-white uppercase"
                 style={{ width: '1%' }}
               >
                 Acciones
@@ -59,11 +61,13 @@ export const GenericTable = ({
               <th
                 key={column.key}
                 scope="col"
-                className={`px-6 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider ${column.sortable ? 'cursor-pointer hover:bg-indigo-700' : ''}`}
+                className={`px-6 py-3 text-left text-xs font-semibold tracking-wider text-white uppercase ${column.sortable ? 'cursor-pointer hover:bg-indigo-700' : ''}`}
                 onClick={() => column.sortable && handleSort(column.key)}
                 style={{ width: column.width }}
               >
-                <div className={`flex items-center ${column.align === 'right' ? 'justify-end' : column.align === 'center' ? 'justify-center' : 'justify-start'}`}>
+                <div
+                  className={`flex items-center ${column.align === 'right' ? 'justify-end' : column.align === 'center' ? 'justify-center' : 'justify-start'}`}
+                >
                   {column.header}
                   {column.sortable && sortConfig?.key === column.key && (
                     <span className="ml-1 text-white">
@@ -75,16 +79,22 @@ export const GenericTable = ({
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="divide-y divide-gray-200 bg-white text-gray-800">
           {loading ? (
             <tr>
-              <td colSpan={columns.length + (actions.length > 0 ? 1 : 0)} className="px-6 py-4 text-center">
+              <td
+                colSpan={columns.length + (actions.length > 0 ? 1 : 0)}
+                className="px-6 py-4 text-center"
+              >
                 Cargando...
               </td>
             </tr>
           ) : data.length === 0 ? (
             <tr>
-              <td colSpan={columns.length + (actions.length > 0 ? 1 : 0)} className="px-6 py-4 text-center text-gray-500">
+              <td
+                colSpan={columns.length + (actions.length > 0 ? 1 : 0)}
+                className="px-6 py-4 text-center text-gray-500"
+              >
                 No se encontraron registros
               </td>
             </tr>
@@ -92,25 +102,21 @@ export const GenericTable = ({
             data.map((item) => (
               <tr key={item[keyField]} className="transition-colors duration-150">
                 {actions.length > 0 && (
-                  <td className="px-2 py-4 whitespace-nowrap text-center text-sm font-medium">
+                  <td className="px-2 py-4 text-center text-sm font-medium whitespace-nowrap">
                     <div className="flex justify-center space-x-2">
                       {actions
-                        .filter(action => !action.permission || hasPermission(action.permission))
+                        .filter((action) => !action.permission || hasPermission(action.permission))
                         .map((action) => (
                           <button
                             key={action.label}
                             onClick={(e) => {
                               e.stopPropagation();
-                              if (action.confirm) {
-                                if (window.confirm(action.confirmMessage || '¿Estás seguro?')) {
-                                  action.onClick(item, onAction);
-                                }
-                              } else {
-                                action.onClick(item, onAction);
-                              }
+                              
+                                action.onClick(item, onAction); 
                             }}
-                            className={`p-2 rounded-md transition-colors duration-200 ${
-                              action.className || 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                            className={`rounded-md p-2 transition-colors duration-200 ${
+                              action.className ||
+                              'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                             }`}
                             title={action.label}
                           >

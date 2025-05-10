@@ -1,8 +1,5 @@
 module.exports = {
-  content: [
-    './src/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}', './app/**/*.{js,ts,jsx,tsx,mdx}'],
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -19,18 +16,18 @@ module.exports = {
           700: '#374151', // Original: #4b5563
           800: '#1f2937', // Original: #374151
           900: '#111827', // Original: #1f2937
-        }
+        },
       },
       textColor: {
         // Define colores de texto con mejor contraste
         base: '#111827', // Texto base más oscuro
         muted: '#374151', // Texto secundario más oscuro
         'blue-primary': '#1e40af', // Azul más contrastante
-      }
+      },
     },
   },
   variants: {
     extend: {},
   },
   plugins: [],
-}
+};

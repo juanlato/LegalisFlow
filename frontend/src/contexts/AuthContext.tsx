@@ -37,14 +37,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const processToken = (accessToken: string) => {
     try {
-      const decoded = jwtDecode<{ permissions: string[], sub: string, email: string, name?: string, role?: string, exp?: number }>(accessToken);
+      const decoded = jwtDecode<{
+        permissions: string[];
+        sub: string;
+        email: string;
+        name?: string;
+        role?: string;
+        exp?: number;
+      }>(accessToken);
       setUserPermissions(decoded.permissions || []);
       setUser({
         id: decoded.sub,
         email: decoded.email,
         name: decoded.name,
         role: decoded.role,
-        exp: decoded.exp
+        exp: decoded.exp,
       });
       return true;
     } catch (error) {
@@ -80,7 +87,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (!token) return false;
     try {
       await api.get('/auth/validate', {
-        headers: getApiHeaders(tenant, token)
+        headers: getApiHeaders(tenant, token),
       });
       return true;
     } catch (error) {
@@ -94,12 +101,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const response = await api.post('/auth/login', { 
-        email, 
-        password 
-      }, {
-        headers: getApiHeaders(tenant)
-      });
+      const response = await api.post(
+        '/auth/login',
+        {
+          email,
+          password,
+        },
+        {
+          headers: getApiHeaders(tenant),
+        },
+      );
       const accessToken = response.data.access_token;
       processToken(accessToken);
       setToken(accessToken);
@@ -129,17 +140,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAuthenticated = !!token;
 
   return (
-    <AuthContext.Provider value={{ 
-      token, 
-      login, 
-      logout, 
-      isAuthenticated, 
-      userPermissions, 
-      hasPermission,
-      isLoading,
-      user,
-      checkAuthStatus
-    }}>
+    <AuthContext.Provider
+      value={{
+        token,
+        login,
+        logout,
+        isAuthenticated,
+        userPermissions,
+        hasPermission,
+        isLoading,
+        user,
+        checkAuthStatus,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

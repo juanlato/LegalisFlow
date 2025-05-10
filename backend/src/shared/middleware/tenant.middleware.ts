@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { TenantsService } from 'src/modules/tenants/tenants.service';
+import { TenantsService } from '../../modules/core/tenants/tenants.service';
 
 @Injectable()
 export class TenantMiddleware implements NestMiddleware {
@@ -8,12 +8,11 @@ export class TenantMiddleware implements NestMiddleware {
 
   async use(req: Request, res: Response, next: NextFunction) {
     // Obtener subdominio de headers (Swagger) o del hostname
-    const subdomain = req.headers['x-tenant-subdomain']?.toString() ;
-    
-     
+    const subdomain = req.headers['x-tenant-subdomain']?.toString();
+
     if (!subdomain) {
       return res.status(400).json({
-        message: 'Subdominio del tenant no proporcionado'
+        message: 'Subdominio del tenant no proporcionado',
       });
     }
 
@@ -21,7 +20,7 @@ export class TenantMiddleware implements NestMiddleware {
       const tenant = await this.tenantsService.findActiveBySubdomain(subdomain);
       if (!tenant) {
         return res.status(404).json({
-          message: 'Tenant no encontrado'
+          message: 'Tenant no encontrado',
         });
       }
 
@@ -31,7 +30,7 @@ export class TenantMiddleware implements NestMiddleware {
     } catch (error) {
       return res.status(500).json({
         message: 'Error al procesar el tenant',
-        error: error.message
+        error: error.message,
       });
     }
   }

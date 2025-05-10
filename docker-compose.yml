@@ -2,20 +2,29 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:16  # Versión estable más reciente
+    image: postgres:16
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: P3_!T9ZT6beV-xU
       POSTGRES_DB: Db_LegalisFlow
     ports:
-      - "5432:5432"  # Mapea el puerto de PostgreSQL
+      - "5432:5432"
     volumes:
-      - pg_data:/var/lib/postgresql/data  # Persistencia de datos
+      # Opción 1: Volumen nombrado con configuración explícita
+      - postgres_data:/var/lib/postgresql/data
+      # Opción 2: Volumen vinculado (bind mount) a una carpeta específica en tu sistema
+      # - D:/Juanlato/LegalisFlow/pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
+    # Asegúrate de que Docker conserve este contenedor
+    restart: unless-stopped
 
 volumes:
-  pg_data:  # Volumen para guardar datos de PostgreSQL
+  postgres_data:
+    # Configuración explícita para que el volumen sea persistente
+    name: legalisflow_postgres_data
+    # Driver 'local' asegura que se guarde en el sistema de archivos local
+    driver: local
