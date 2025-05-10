@@ -19,7 +19,7 @@ Cada vez que se trabaje en un issue de GitHub, se debe agregar en esta carpeta t
 Para mantener el orden, sigue esta estructura sugerida:
 
 ```
-documentacion/
+documentation/
 │
 ├── issue/                  # Reemplazar con el nombre del issue general
 │   ├── especificaciones.md     # Documentación técnica detallada
